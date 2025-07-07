@@ -28,7 +28,7 @@ def reflect_node(state):
             "messages": state
         }
     )
-    return state + [HumanMessage(content=response.content)]
+    return state + [HumanMessage(content=response.content)] #
 
 graph.add_node(
     GENERATE,
@@ -51,7 +51,7 @@ def should_continue(state: List[BaseMessage]):
     print(f"State before checking continuation: {state}")
     # Par exemple : boucle 3 fois max
     num_cycles = sum(1 for m in state if isinstance(m, HumanMessage))
-    if num_cycles >= 3:
+    if num_cycles >= 2:
         return END
     return REFLECT
 
