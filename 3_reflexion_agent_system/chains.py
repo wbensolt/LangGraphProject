@@ -1,3 +1,4 @@
+import os
 from typing import Any, Dict
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 import datetime
@@ -7,6 +8,7 @@ from schema import AnswerQuestion, ReviewAnswer
 from langchain_core.messages import HumanMessage
 import json
 from dotenv import load_dotenv
+from langchain_groq import ChatGroq
 
 load_dotenv()
 
@@ -125,7 +127,8 @@ first_responder_prompt_template = actor_prompt_template.partial(
 )
 
 LLM_MODEL = "llama3.2:latest"
-llm = ChatOllama(model=LLM_MODEL)
+#llm = ChatOllama(model=LLM_MODEL)
+llm = ChatGroq(model="meta-llama/llama-4-scout-17b-16e-instruct", api_key=os.getenv("GROQ_API_KEY"))
 
 # Define the chain with parsing
 def process_response(response):
@@ -136,6 +139,7 @@ def process_response(response):
     return parsed_response
 
 first_responder_chain = first_responder_prompt_template | llm | process_response
+#llm.bind_tools(tools=[AnswerQuestion], tool_choice='AnswerQuestion') #
 
 # Revisor section
 revise_instructions = """Revise your previous answer using the new information.
@@ -168,7 +172,7 @@ def process_revisor_response(response):
 revisor_chain = actor_prompt_template.partial(
     first_instruction=revise_instructions
 ) | llm | process_revisor_response
-
+#.bind_tools(tools=[ReviewAnswer], tool_choice='ReviewAnswer') #
 # Invoke the first responder chain
 response = first_responder_chain.invoke({
     "messages": [HumanMessage(content="Write me a blog post on how small business can leverage AI to grow")]

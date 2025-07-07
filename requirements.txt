@@ -31,3 +31,8 @@ langchain-google-genai
 python-dotenv
 langgraph
 grandalf
+langchain_tavily
+langchain-groq
+langgraph-prebuilt
+langgraph-checkpoint
+langgraph-checkpoint-sqlite

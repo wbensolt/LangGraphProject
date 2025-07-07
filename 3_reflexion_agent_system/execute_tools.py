@@ -1,13 +1,13 @@
 import json
-from typing import List, Dict, Any
+from typing import List
 from langchain_core.messages import AIMessage, BaseMessage, ToolMessage, HumanMessage
-from langchain_community.tools import TavilySearchResults
+from langchain_tavily import TavilySearchResults
 
 #Create the Tavily search tool
 tavily_tool = TavilySearchResults(max_results=5)
 
 #Function to execute search queries from AnswerQuestion tool calls
-def execute_tools(state: List[BaseExceptionGroup]) -> List[BaseMessage]:
+def execute_tools(state: List[BaseMessage]) -> List[BaseMessage]:
     last_ai_message: AIMessage = state[-1]
 
     #Execute tool calls from the AI message

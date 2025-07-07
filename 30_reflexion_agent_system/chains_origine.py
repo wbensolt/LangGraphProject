@@ -71,7 +71,7 @@ first_responder_prompt_template = actor_prompt_template.partial(
 LLM_MODEL = "llama3.2:latest"
 llm = ChatOllama(model=LLM_MODEL)
 
-first_responder_chain = first_responder_prompt_template | llm.bind_tools(tools=[AnswerQuestion], tool_choice='AnswerQuestion')
+first_responder_chain = first_responder_prompt_template | llm
 #.bind_tools(tools=[AnswerQuestion], tool_choice='AnswerQuestion') | pydantic_parser
 
 #Revisor section
@@ -92,7 +92,7 @@ revise_instructions = """Revise your previous answer using the new information.
 
 revisor_chain = actor_prompt_template.partial(
     first_instruction = revise_instructions
-) | llm.bind_tools(tools=[ReviewAnswer], tool_choice='ReviewAnswer')
+) | llm
 
 response = first_responder_chain.invoke({
     "messages": [HumanMessage(content="Write me a blog post on how small business" \
